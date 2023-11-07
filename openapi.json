@@ -1,0 +1,254 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TechBuddy API",
+    "description": "TechBuddy is an api made for Amalitech's partners to be able to upload and retrieve images and videos to and from [Cloudinary](https://cloudinary.com).",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "ckabera6@mgail.com"
+    },
+    "license": {
+      "name": "GitHub Repository",
+      "url": "https://github.com/KaberaClapton/techBuddy"
+    },
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "asset",
+      "description": "Everything about your video/image assets",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/KaberaClapton/techBuddy"
+      }
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/asset/upload-asset": {
+      "get": {
+        "tags": [
+          "asset"
+        ],
+        "summary": "Get the form for uploading assets",
+        "description": "Get request that returns the Thymeleaf tempplate form used for uploading assets",
+        "operationId": "getUploadForm",
+        "responses": {
+          "200": {
+            "description": "An html form",
+            "content": {
+              "application/html": {
+                "schema": {
+                  "$ref": "#/components/schemas/Asset"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Page not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "asset"
+        ],
+        "summary": "Add a new asset to Cloudinary",
+        "description": "Post request to upload the specified image or video to Cloudinary",
+        "operationId": "addAsset",
+        "requestBody": {
+          "description": "Create a new asset in Cloudinary",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Asset"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "File uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Asset"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Asset"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/asset/my-assets": {
+      "get": {
+        "tags": [
+          "asset"
+        ],
+        "summary": "Find all assets",
+        "description": "Retrieves all assets uploaded to Cloudinary based on the logged in user.",
+        "operationId": "findAllAssets",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "available",
+              "enum": [
+                "available",
+                "pending",
+                "sold"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Asset"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Asset"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/create-account": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user account",
+        "description": "Here a user can create an account inorder to login and use the api",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "New user details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "username": {
+            "type": "string",
+            "example": "theUser"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345"
+          },
+          "role": {
+            "type": "string",
+            "example": "PARTNER"
+          }
+        }
+      },
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "format": "MultipartFile",
+            "example": "myImage.png"
+          },
+          "description": {
+            "type": "string",
+            "example": "The logo on the Company website"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "Asset": {
+        "description": "Image/Video asset to be uploaded to Cloudinary",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Asset"
+            }
+          }
+        }
+      }
+    }
+  }
+}
