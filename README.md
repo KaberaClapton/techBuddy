@@ -14,3 +14,6 @@ needed for the project.
 
 After the dependencies have been resolved you can run the main class.
 
+## More
+There is also an Entity Relationship Diagram and Data Flow Diagram in the repository.
+
