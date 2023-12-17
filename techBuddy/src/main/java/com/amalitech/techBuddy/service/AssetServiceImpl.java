@@ -7,6 +7,7 @@ import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,5 +52,31 @@ public class AssetServiceImpl implements AssetService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return assetDao.findByOwner(userService.findByUsername(userDetails.getUsername()));
+    }
+
+    @Override
+    public String getUsername(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        return userDetails.getUsername();
+    }
+
+    @Override
+    public Asset getAssetById(Long id) {
+        Optional<Asset> assetToFind = assetDao.findById(id);
+        if(assetToFind.isEmpty()){
+            throw new IllegalArgumentException("Asset id not found");
+        }
+        return assetToFind.get();
+    }
+
+    @Override
+    public Asset updateAsset(Asset asset) {
+        return assetDao.save(asset);
+    }
+
+    @Override
+    public Asset getAssetsBySearch(String search) {
+        return assetDao.findByDescriptionLike(search);
     }
 }

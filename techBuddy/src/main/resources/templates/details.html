@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edit Image Details</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
+  <style>
+        body {
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .image-preview {
+            max-width: 50%;
+            height: auto;
+        }
+
+        .details-form {
+            max-width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">TechBuddy</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/api/v1/asset/my-assets}">View Assets</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:text="${username + ' LoggedIn'}"></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h2>Edit Image Details</h2>
+
+  <div class="image-container">
+
+    <img style="height:370px; width:270px; border-radius:10px;" th:src="${asset.filePath}" alt="My Image" class="image-preview">
+
+    <form class="details-form" th:action="@{/api/v1/asset/update/{id} (id=${asset.id})}" method="post">
+      <!-- Input fields for editing image details -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <textarea type="text" class="form-control" id="description" name="description" th:text="${asset.description}"></textarea>
+<!--        <input type="text" class="form-control" id="description" name="description" th:value="${asset.description}">-->
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+</div>
+
+<!-- Bootstrap JS and dependencies (Popper.js, jQuery) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

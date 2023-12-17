@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AssetDao extends JpaRepository<Asset, Long> {
     List<Asset> findByOwner(User owner);
+    Asset findByDescriptionLike(String description);
 }

@@ -9,6 +9,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -30,9 +31,26 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers("/api/v1/user/create-account").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/user/create-account").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/user/create-account").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .requestMatchers("/images/birds.jpg").permitAll()
+                        .requestMatchers("/subscribe").permitAll()
                         .anyRequest().authenticated()
-        );
+//                        .anyRequest().permitAll()
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/api/v1/login")
+                                .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/api/v1/asset/my-assets")
+                                .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
+                );
 
         http.httpBasic(Customizer.withDefaults());
         http.csrf(csrf -> csrf.disable());

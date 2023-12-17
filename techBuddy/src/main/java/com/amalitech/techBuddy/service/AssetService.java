@@ -11,6 +11,9 @@ import java.util.List;
 @Service
 public interface AssetService {
     String uploadAsset(MultipartFile multipartFile, AssetDto assetDto) throws IOException;
-
     List<Asset> getAssetsByUser();
+    String getUsername();
+    Asset getAssetById(Long id);
+    Asset updateAsset(Asset asset);
+    Asset getAssetsBySearch(String search);
 }

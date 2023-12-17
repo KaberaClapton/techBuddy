@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>TechBuddy - Home</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+        body {
+            background-color: #f0f0f0; /* Set your preferred background color */
+        }
+
+        .navbar {
+            background-color: #000; /* Black navigation bar */
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #fff; /* White text for navbar links */
+        }
+
+        .section-container {
+            margin: 20px;
+        }
+
+        .file-section .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .file-section .image-item {
+            flex: 0 0 calc(33.33% - 20px); /* Adjust based on the number of columns (3 images per row) */
+            margin-bottom: 20px;
+        }
+
+        .file-section .image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .file-section img {
+            max-width: 100%; /* Make images responsive */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            transition: transform 0.3s; /* Add smooth transition on hover */
+        }
+
+        .file-section .image-details {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust background color and opacity as needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s; /* Add smooth transition on hover */
+        }
+
+        .file-section .image-item:hover .image-details {
+            opacity: 1;
+        }
+
+        .file-section .image-description {
+            margin: 10px;
+            text-align: center;
+        }
+        .newsletter-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" th:href="@{/}">TechBuddy</a>
+  <div class="collapse navbar-collapse justify-content-end">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/api/v1/login}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/api/v1/user/create-account}">Register</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="section-container">
+  <div th:if="${param.subscribed}">
+    <div class="alert alert-info">
+      Thank you for subscribing to our Newsletter.
+    </div>
+  </div>
+  <div class="file-section animated">
+    <h2>Images</h2>
+    <div class="image-container">
+      <!-- Repeat this block for each image -->
+      <div class="image-item">
+        <div class="image-wrapper">
+          <img th:src="@{/images/birds.jpg}" alt="Front Image">
+          <div class="image-details">
+            <p class="image-description">Front Image</p>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat block ends -->
+    </div>
+  </div>
+</div>
+
+<div class="newsletter-section">
+  <h3>Subscribe to TechBuddy Newsletter</h3>
+  <form method="post" th:action="@{/subscribe}">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address:</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Subscribe</button>
+  </form>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

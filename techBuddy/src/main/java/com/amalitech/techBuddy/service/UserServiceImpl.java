@@ -30,17 +30,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String registerUser(UserDto userDto) {
+    public boolean registerUser(UserDto userDto) {
         if(userDao.findByUsername(userDto.getUsername()) != null){
-            return "Username already exists";
+            return false;
         }
 
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(roleDao.findByName(userDto.getRole().toString()));
+        user.setRole(roleDao.findByName("ROLE_PARTNER"));
         userDao.save(user);
-        return "Account created for " + user.getUsername();
+        return true;
     }
 
     @Override
